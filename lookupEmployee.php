@@ -62,7 +62,7 @@ if(isset($_POST['submit'])){
 			<button type="submit" name="submit" value="submit" class="btn btn-default">Submit</button>
 		</form>
 		<?php
-		if($employee){
+		if(isset($employee)){
 			echo '<table><tr><td>Name</td><td>'.$name.'</td></tr><tr><td>Phone</td><td>'.$phone.'</td></tr><tr><td>Address</td><td>'.$address.'</td></tr><tr><td>City</td><td>'.$city.'</td></tr><tr><td>Currently Employed&nbsp;&nbsp;&nbsp;</td><td>'.$currentlyEmployed.'</td></tr></table>';
 		}
 		?>

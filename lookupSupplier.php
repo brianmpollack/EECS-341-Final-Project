@@ -3,24 +3,23 @@ require("mysql.php");
 $mysqli = MySql::getConnection();
 
 //Get all of the customers
-$customers = $mysqli->query("SELECT People.ID AS ID, `Name` FROM Customers INNER JOIN People on Customers.ID=People.ID");
-if(!$customers){
-	trigger_error("There was an error. Could not get the customers from the database. Error: $mysqli->error");
+$suppliers = $mysqli->query("SELECT `SupplierID`, `CompanyName` FROM Suppliers");
+if(!$suppliers){
+	trigger_error("There was an error. Could not get the suppliers from the database. Error: $mysqli->error");
 }
 
 if(isset($_POST['submit'])){
-	$customerID = $_POST['customerID'];
-	$customer = $mysqli->query("SELECT `Name`, `Phone`, `Address`, `City`, `Email`, `CardNumber` FROM Customers INNER JOIN People on Customers.ID=People.ID AND Customers.ID='$customerID'");
-	if(!$customer){
+	$supplierID = $_POST['customerID'];
+	$supplier = $mysqli->query("SELECT `CompanyName`, `ContactName`, `Phone`, `Address`, `City` FROM Suppliers WHERE `SupplierID`='$supplierID'");
+	if(!$supplier){
 		trigger_error("There was an error. Could not get the customer from the database. Error: $mysqli->error");
 	}
-	$customer = mysqli_fetch_assoc($customer);
-	$name = $customer['Name'];
-	$phone = $customer['Phone'];
-	$address = $customer['Address'];
-	$city = $customer['City'];
-	$email = $customer['Email'];
-	$cardNumber = $customer['CardNumber'];
+	$supplier = mysqli_fetch_assoc($supplier);
+	$companyName = $supplier['CompanyName'];
+	$contactName = $supplier['ContactName'];
+	$phone = $supplier['Phone'];
+	$address = $supplier['Address'];
+	$city = $supplier['City'];
 }
 ?>
 <!DOCTYPE html>
@@ -43,22 +42,22 @@ if(isset($_POST['submit'])){
 <body>
 	<div class="container">
 		<div class="page-header">
-			<h1>Welcome to the Coffee Shop. <small>Lookup Customer.</small></h1>
+			<h1>Welcome to the Coffee Shop. <small>Lookup Supplier.</small></h1>
 		</div>
 		<p><a href="http://eecs341.pollack.tech">RETURN TO HOME</a></p>
 		<form method="post">
 			<select name="customerID">
 				<?php
-				while($customers_row = mysqli_fetch_assoc($customers)){
-					echo '<option value="'.$customers_row['ID'].'">'.$customers_row['Name'].'</option>';
+				while($suppliers_row = mysqli_fetch_assoc($suppliers)){
+					echo '<option value="'.$suppliers_row['SupplierID'].'">'.$suppliers_row['CompanyName'].'</option>';
 				}
 				?>
 			</select>
 			<button type="submit" name="submit" value="submit" class="btn btn-default">Submit</button>
 		</form>
 		<?php
-		if(isset($customer)){
-			echo '<table><tr><td>Name</td><td>'.$name.'</td></tr><tr><td>Phone</td><td>'.$phone.'</td></tr><tr><td>Address</td><td>'.$address.'</td></tr><tr><td>City</td><td>'.$city.'</td></tr><tr><td>Email</td><td>'.$email.'</td></tr><tr><td>Card Number&nbsp;&nbsp;&nbsp;</td><td>'.$cardNumber.'</td></tr></table>';
+		if(isset($supplier)){
+			echo '<table><tr><td>Company Name&nbsp;&nbsp;&nbsp;</td><td>'.$companyName.'</td></tr><tr><td>Contact Name</td><td>'.$contactName.'</td></tr><tr><td>Phone</td><td>'.$phone.'</td></tr><tr><td>Address</td><td>'.$address.'</td></tr><tr><td>City</td><td>'.$city.'</td></tr></table>';
 		}
 		?>
 	</div>

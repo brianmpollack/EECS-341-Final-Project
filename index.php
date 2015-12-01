@@ -53,14 +53,14 @@
 			</div>
 			<div class="col-md-4">
 				<div class="jumbotron">
-					<p>Add Supplier</p>
+					<p><a href="addSupplier.php">Add Supplier</a></p>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="jumbotron">
-					<p>Lookup Supplier</p>
+					<p><a href="lookupSupplier.php">Lookup Supplier</a></p>
 				</div>
 			</div>
 			<div class="col-md-4">
