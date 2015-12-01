@@ -7,14 +7,19 @@ $user_message = "";
 if(isset($_POST['submit'])){
 	$customerID = $_POST['customer'];
 	$itemsSold = $_POST['item'];
+	$quantitySold = $_POST['quantity'];
 
 	$sql = "";
-	foreach($itemsSold as $itemNumber){
-		$sql .= "INSERT INTO Sales (`ID`, `ItemNumber`, `Quantity`, `Date`) VALUES ('$customerID', '$itemNumber', '1', now());";
+	foreach($itemsSold as $key=>$itemNumber){
+		$quantity = $quantitySold[$key];
+		$sql .= "INSERT INTO Sales (`ID`, `ItemNumber`, `Quantity`, `Date`) VALUES ('$customerID', '$itemNumber', '$quantity', now());";
 	}
 	if($sql != ""){
 		$sale = $mysqli->multi_query($sql);
-		if($sale){
+		if(!$sale){
+			trigger_error("Could not save the sale. Error: $mysqli->error");
+		}
+		else {
 			$user_message = "Thank you. Your sale has been recorded.";
 			do {
 				$mysqli->use_result();
@@ -56,7 +61,7 @@ if(isset($_POST['submit'])){
 				
 				echo '<table id="itemTable">';
 				echo '<tr><th>Customer</th></tr>';
-				echo '<tr><td><select name="customer">';
+				echo '<tr><td></td><td><select name="customer">';
 				//print options from customer table
 				$customers = $mysqli->query("SELECT `Name` FROM Customers INNER JOIN People ON Customers.ID=People.ID");
 				if(!$customers){
@@ -65,11 +70,11 @@ if(isset($_POST['submit'])){
 				while($customers_row = mysqli_fetch_assoc($customers)){
 					echo '<option value="'.$customers_row['Name'].'">'.$customers_row['Name'].'</option>';
 				}
-				echo '</select></tr></td>';
+				echo '</select></td></tr>';
 				
 				
 				echo '<tr><th>Products</th></tr>';
-				echo '<tr><td><select name="item[]">';
+				echo '<tr><td><input type="number" name="quantity[]" placeholder="Qty" style="width: 40px"/></td><td><select name="item[]">';
 				$items = $mysqli->query("SELECT `Name`, `ItemNumber` FROM Products");
 				if(!$items){
 					trigger_error("There was an error. Error: $mysqli->error");
@@ -79,13 +84,22 @@ if(isset($_POST['submit'])){
 				$itemsJavaScript .= 'var tr = document.createElement("tr");';
 				$itemsJavaScript .= 'var td = document.createElement("td");';
 				$itemsJavaScript .= 'var select = document.createElement("select");';
+				$itemsJavaScript .= 'select.setAttribute("name", "item[]");';
+				$itemsJavaScript .= 'var td_qty = document.createElement("td");';
+				$itemsJavaScript .= 'var input = document.createElement("input");';
+				$itemsJavaScript .= 'td_qty.appendChild(input);';
+				$itemsJavaScript .= 'input.setAttribute("type", "number");';
+				$itemsJavaScript .= 'input.setAttribute("name", "quantity[]");';
+				$itemsJavaScript .= 'input.setAttribute("placeholder", "Qty");';
+				$itemsJavaScript .= 'input.setAttribute("style", "width: 40px");';
 				while($items_row = mysqli_fetch_assoc($items)){
-					echo '<option value="'.$items_row['Name'].'">'.$items_row['Name'].'</option>';
+					echo '<option value="'.$items_row['ItemNumber'].'">'.$items_row['Name'].'</option>';
 					$itemsJavaScript .= "var item".$items_row['ItemNumber'].' = document.createElement("option");';
 					$itemsJavaScript .= "item".$items_row['ItemNumber'].'.setAttribute("value", "'.$items_row['ItemNumber'].'");';
 					$itemsJavaScript .= "item".$items_row['ItemNumber'].'.text="'.$items_row['Name'].'";';
 					$itemsJavaScript .= 'select.appendChild(item'.$items_row['ItemNumber'].');';
 				}
+				$itemsJavaScript .= 'tr.appendChild(td_qty);';
 				$itemsJavaScript .= 'tr.appendChild(td);';
 				$itemsJavaScript .= 'td.appendChild(select);';
 				$itemsJavaScript .= 'document.getElementById("itemTable").appendChild(tr);';
