@@ -65,7 +65,7 @@
 			</div>
 			<div class="col-md-4">
 				<div class="jumbotron">
-					<p>Order New Inventory</p>
+					<p><a href="orderInventory.php">Order New Inventory</a></p>
 				</div>
 			</div>
 			<div class="col-md-4">
