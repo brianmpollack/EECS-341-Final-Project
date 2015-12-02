@@ -1,6 +1,3 @@
-<?php
-	
-?>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -70,7 +67,7 @@
 			</div>
 			<div class="col-md-4">
 				<div class="jumbotron">
-					<p>[Empty]</p>
+					<p><a href="deactivateEmployee.php">Make Employee Inactive</a></p>
 				</div>
 			</div>
 		</div>

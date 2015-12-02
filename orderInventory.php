@@ -60,7 +60,7 @@ if(isset($_POST['submit'])){
 				
 				echo '<table id="itemTable">';
 				echo '<tr><th>Products</th></tr>';
-				echo '<tr><td><input name="quantity[]" placeholder="Qty" style="width: 40px"/><td><select name="item[]">';
+				echo '<tr><td><input type="number" name="quantity[]" placeholder="Qty" style="width: 40px"/><td><select name="item[]">';
 				$items = $mysqli->query("SELECT `Name`, `ItemNumber` FROM Products");
 				if(!$items){
 					trigger_error("There was an error. Error: $mysqli->error");
@@ -72,6 +72,7 @@ if(isset($_POST['submit'])){
 				$itemsJavaScript .= 'var td_qty = document.createElement("td");';
 				$itemsJavaScript .= 'var input = document.createElement("input");';
 				$itemsJavaScript .= 'td_qty.appendChild(input);';
+				$itemsJavaScript .= 'input.setAttribute("type", "number");';
 				$itemsJavaScript .= 'input.setAttribute("name", "quantity[]");';
 				$itemsJavaScript .= 'input.setAttribute("placeholder", "Qty");';
 				$itemsJavaScript .= 'input.setAttribute("style", "width: 40px");';

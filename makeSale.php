@@ -75,7 +75,7 @@ if(isset($_POST['submit'])){
 				
 				echo '<tr><th>Products</th></tr>';
 				echo '<tr><td><input type="number" name="quantity[]" placeholder="Qty" style="width: 40px"/></td><td><select name="item[]">';
-				$items = $mysqli->query("SELECT `Name`, `ItemNumber` FROM Products");
+				$items = $mysqli->query("SELECT `Name`, `ItemNumber`, `Price` FROM Products");
 				if(!$items){
 					trigger_error("There was an error. Error: $mysqli->error");
 				}
@@ -93,10 +93,10 @@ if(isset($_POST['submit'])){
 				$itemsJavaScript .= 'input.setAttribute("placeholder", "Qty");';
 				$itemsJavaScript .= 'input.setAttribute("style", "width: 40px");';
 				while($items_row = mysqli_fetch_assoc($items)){
-					echo '<option value="'.$items_row['ItemNumber'].'">'.$items_row['Name'].'</option>';
+					echo '<option value="'.$items_row['ItemNumber'].'">'.$items_row['Name'].' - $'.$items_row['Price'].'</option>';
 					$itemsJavaScript .= "var item".$items_row['ItemNumber'].' = document.createElement("option");';
 					$itemsJavaScript .= "item".$items_row['ItemNumber'].'.setAttribute("value", "'.$items_row['ItemNumber'].'");';
-					$itemsJavaScript .= "item".$items_row['ItemNumber'].'.text="'.$items_row['Name'].'";';
+					$itemsJavaScript .= "item".$items_row['ItemNumber'].'.text="'.$items_row['Name'].' - $'.$items_row['Price'].'";';
 					$itemsJavaScript .= 'select.appendChild(item'.$items_row['ItemNumber'].');';
 				}
 				$itemsJavaScript .= 'tr.appendChild(td_qty);';
