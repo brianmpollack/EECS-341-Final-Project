@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
 	$sql = "";
 	foreach($itemsSold as $key=>$itemNumber){
 		$quantity = $quantitySold[$key];
-		$sql .= "INSERT INTO Sales (`ID`, `ItemNumber`, `Quantity`, `Date`) VALUES ('$customerID', '$itemNumber', '$quantity', now());";
+		$sql .= "INSERT INTO Sales (`CustomerID`, `ItemNumber`, `Quantity`, `Date`) VALUES ('$customerID', '$itemNumber', '$quantity', now());";
 	}
 	if($sql != ""){
 		$sale = $mysqli->multi_query($sql);
@@ -63,12 +63,12 @@ if(isset($_POST['submit'])){
 				echo '<tr><th>Customer</th></tr>';
 				echo '<tr><td></td><td><select name="customer">';
 				//print options from customer table
-				$customers = $mysqli->query("SELECT `Name` FROM Customers INNER JOIN People ON Customers.ID=People.ID");
+				$customers = $mysqli->query("SELECT Customers.ID, `Name` FROM Customers INNER JOIN People ON Customers.ID=People.ID");
 				if(!$customers){
 					trigger_error("There was an error. Error: $mysqli->error");
 				}
 				while($customers_row = mysqli_fetch_assoc($customers)){
-					echo '<option value="'.$customers_row['Name'].'">'.$customers_row['Name'].'</option>';
+					echo '<option value="'.$customers_row['ID'].'">'.$customers_row['Name'].'</option>';
 				}
 				echo '</select></td></tr>';
 				

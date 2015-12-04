@@ -15,7 +15,7 @@ if(isset($_POST['submit'])){
 	}
 	else {
 		$employee_id = $mysqli->insert_id;
-		$insert = $mysqli->query("INSERT INTO Customers (`ID`, `CurrentlyEmployed`) VALUES ('$employee_id', true)");
+		$insert = $mysqli->query("INSERT INTO Employees (`ID`, `CurrentlyEmployed`) VALUES ('$employee_id', '1')");
 		if(!$insert){
 			trigger_error("There was an error. Could not insert into the database. Error: $mysqli->error");
 		}
